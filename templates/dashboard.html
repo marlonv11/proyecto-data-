@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANE - GEIH Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/dashboard.css') }}">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div>
+            <div class="logo">
+                <h1>DANE - GEIH</h1>
+                <p>Informalidad Laboral</p>
+            </div>
+            <ul class="menu">
+                <li><a onclick="switchTab('resumen', this)" class="active">Resumen</a></li>
+                <li><a onclick="switchTab('logit', this)">Modelo Logit</a></li>
+                <li><a onclick="switchTab('graficas', this)">Gráficas</a></li>
+                <li><a onclick="switchTab('pipeline', this)">Pipeline</a></li>
+            </ul>
+        </div>
+        <div class="api-status">
+            <span class="status-dot"></span> API Activa: localhost:8000
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <!-- ══════════════════ RESUMEN ══════════════════ -->
+        <section id="resumen" class="view-section active-view">
+            <div class="title">
+                <h2>Resumen Ejecutivo</h2>
+                <p>Análisis predictivo y estructural de la informalidad en Colombia</p>
+            </div>
+
+            <div class="kpi-container">
+                <div class="kpi-card">
+                    <h4>MUESTRA TOTAL (N)</h4>
+                    <div class="value" id="kpi-obs">-</div>
+                </div>
+                <div class="kpi-card">
+                    <h4>TASA INFORMALIDAD</h4>
+                    <div class="value" id="kpi-tasa">-</div>
+                </div>
+                <div class="kpi-card">
+                    <h4>PSEUDO R² (LOGIT)</h4>
+                    <div class="value" id="kpi-r2">-</div>
+                </div>
+                <div class="kpi-card">
+                    <h4>EXACTITUD MODELO</h4>
+                    <div class="value" id="kpi-accuracy">-</div>
+                </div>
+            </div>
+
+            <div class="card card-large">
+                <h3>DESCRIPCIÓN DEL PROYECTO</h3>
+                <p class="text-block">Este sistema procesa de forma integrada los microdatos de las encuestas de <strong>Características Generales</strong> y <strong>Ocupados</strong> de la GEIH (Gran Encuesta Integrada de Hogares) del DANE para el último trimestre del año, consolidando un Pipeline automatizado de Extracción, Transformación e Imputación (ETL).</p>
+                <p class="text-block">El componente analítico modela la probabilidad de informalidad laboral mediante una <strong>Regresión Logística (Logit)</strong> en Python, calculando efectos marginales estadísticamente significativos para entender el impacto real de variables socioeconómicas críticas (Edad, Educación, Ingresos y Horas Laboradas).</p>
+                <p class="text-block">Finalmente, la solución se extiende hacia un entorno empresarial mediante la exposición de una <strong>API REST (FastAPI)</strong>, la cual sirve como pasarela de datos en tiempo real para alimentar tableros de control ejecutivos en <strong>Power BI</strong>, logrando una sincronización perfecta entre la ciencia de datos predictiva y la inteligencia de negocios (BI).</p>
+            </div>
+        </section>
+
+        <!-- ══════════════════ MODELO LOGIT ══════════════════ -->
+        <section id="logit" class="view-section">
+            <div class="title">
+                <h2>Modelo de Regresión Logística</h2>
+                <p>Efectos marginales e inferencia estadística</p>
+            </div>
+
+            <div class="grid">
+
+                <!-- Tabla completa de efectos marginales -->
+                <div class="card card-large">
+                    <h3>EFECTOS MARGINALES ESTIMADOS (dy/dx — overall)</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>dy/dx</th>
+                                    <th>Std. Err</th>
+                                    <th>z</th>
+                                    <th>P&gt;|z|</th>
+                                    <th>IC 95% inf</th>
+                                    <th>IC 95% sup</th>
+                                    <th>Significancia</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-efectos"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Curva ROC -->
+                <div class="card">
+                    <h3>DESEMPEÑO (CURVA ROC)</h3>
+                    <div class="img-container skeleton">
+                        <img id="imgROC" alt="Curva ROC">
+                    </div>
+                </div>
+
+                <!-- Pseudo R² con interpretación dinámica -->
+                <div class="card">
+                    <h3>PSEUDO R² (McFadden)</h3>
+                    <div id="pseudoR2Display" style="
+                        font-size: 52px;
+                        font-weight: bold;
+                        color: #4c8dff;
+                        font-family: monospace;
+                        letter-spacing: 2px;
+                        margin: 14px 0 8px;
+                    ">-</div>
+                    <p class="text-block">
+                        Un Pseudo R² de McFadden entre <strong>0.20 y 0.40</strong> se considera
+                        un ajuste excelente en modelos Logit. El modelo actual alcanza
+                        <strong id="pseudoR2Texto">-</strong>, indicando una capacidad
+                        explicativa sólida sobre la probabilidad de informalidad laboral.
+                    </p>
+                    <p class="text-block">
+                        Las variables de <strong>Educación Superior (niveles 4 y 5)</strong> y
+                        <strong>Área Rural</strong> muestran los efectos marginales más grandes
+                        y son estadísticamente significativas con p&nbsp;&lt;&nbsp;0.05.
+                        El umbral de clasificación estándar es p&nbsp;≥&nbsp;0.5.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ══════════════════ GRÁFICAS ══════════════════ -->
+        <section id="graficas" class="view-section">
+            <div class="title">
+                <h2>Gráficas Exploratorias</h2>
+                <p>Distribuciones y relaciones clave detectadas en el dataset limpio</p>
+            </div>
+
+            <div class="grid">
+                <div class="card card-large">
+                    <h3>DISTRIBUCIÓN DEL INGRESO LABORAL POR MES</h3>
+                    <div class="img-container skeleton">
+                        <img id="imgIngreso" alt="Ingresos por mes">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>HORAS TRABAJADAS POR SEMANA</h3>
+                    <div class="img-container skeleton">
+                        <img id="imgHoras" alt="Horas semanales">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>INFORMALIDAD POR NIVEL EDUCATIVO</h3>
+                    <div class="img-container skeleton">
+                        <img id="imgEducacion" alt="Educación e informalidad">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>EDAD POR CONDICIÓN LABORAL</h3>
+                    <div class="img-container skeleton">
+                        <img id="imgEdad" alt="Edad e informalidad">
+                    </div>
+                </div>
+
+                <div class="card card-large">
+                    <h3>INFORMALIDAD POR SECTOR</h3>
+                    <div class="img-container skeleton">
+                        <img id="imgSector" alt="Sector económico e informalidad">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════ PIPELINE ══════════════════ -->
+        <section id="pipeline" class="view-section">
+            <div class="title">
+                <h2>Data Pipeline Architecture</h2>
+                <p>Procesamiento de Extracción, Transformación, Imputación y Carga (ETL)</p>
+            </div>
+            <div class="card card-large">
+                <h3>FLUJO DE DATOS AUTOMATIZADO</h3>
+                <p class="text-block"><strong>1. Lectura selectiva:</strong> Se redujo el uso de memoria RAM cargando únicamente los vectores e índices requeridos mediante parámetros directos de Pandas.</p>
+                <p class="text-block"><strong>2. Homologación:</strong> Combinación exacta de los registros mediante validaciones 1-a-1 de las llaves primarias compuestas de la GEIH del DANE.</p>
+                <p class="text-block"><strong>3. Imputación:</strong> Corrección condicional de los salarios huérfanos empleando la media móvil indexada a la posición del rango del trabajador.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,244 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #070b17;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+}
+
+/* Sidebar Fijo */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: #0d1324;
+    padding: 30px 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    border-right: 1px solid #1f2942;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logo {
+    margin-bottom: 40px;
+}
+
+.logo h1 {
+    color: #4c8dff;
+    font-size: 24px;
+}
+
+.logo p {
+    color: #8ea4d2;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.menu {
+    list-style: none;
+    flex-grow: 1;
+}
+
+.menu li {
+    margin-bottom: 12px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #b5c7f3;
+    display: block;
+    padding: 14px;
+    border-radius: 12px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.menu a:hover, .menu a.active {
+    background: #1b2c50;
+    color: white;
+    font-weight: bold;
+}
+
+.api-status {
+    font-size: 12px;
+    color: #8ea4d2;
+    padding-top: 15px;
+    border-top: 1px solid #1f2942;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #00ffaa;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+/* Contenedor Principal */
+.main {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    padding: 40px;
+}
+
+.view-section {
+    display: none;
+}
+
+.view-section.active-view {
+    display: block;
+}
+
+.title {
+    margin-bottom: 35px;
+}
+
+.title h2 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.title p {
+    color: #8ea4d2;
+}
+
+/* Tarjetas Informativas KPI */
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.kpi-card {
+    background: #0d1324;
+    border: 1px solid #1f2942;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+}
+
+.kpi-card h4 {
+    font-size: 12px;
+    color: #8ea4d2;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.kpi-card .value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #4c8dff;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.card {
+    background: #131c33;
+    border: 1px solid #233354;
+    border-radius: 24px;
+    padding: 25px;
+}
+
+.card-large {
+    grid-column: 1 / 3;
+}
+
+.card h3 {
+    margin-bottom: 20px;
+    color: #9cb4ea;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+}
+
+/* Tablas */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background: #0d1324;
+    color: #9cb4ea;
+    padding: 12px;
+    font-weight: 600;
+    border-bottom: 2px solid #1f2942;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #1f2942;
+    color: #b5c7f3;
+}
+
+tr:hover {
+    background: #17233d;
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.badge-sig { background: #00ffaa22; color: #00ffaa; }
+.badge-ns { background: #ff6f6122; color: #ff6f61; }
+
+/* Gráficas e Imágenes */
+.img-container {
+    width: 100%;
+    min-height: 250px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #17233d 25%, #203154 50%, #17233d 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite ease-in-out;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+img {
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+img.loaded {
+    opacity: 1;
+}
+
+.text-block {
+    line-height: 1.6;
+    color: #b5c7f3;
+    margin-bottom: 15px;
+}
